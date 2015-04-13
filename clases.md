@@ -36,8 +36,9 @@ proyectos:
 ----------
 
 [web browser en arduino](http://hackaday.com/2014/10/05/web-browser-pushes-arduinos-limits/)
+
 [web server usando Ethernet Shield](http://www.instructables.com/id/Arduino-Ethernet-Shield-Tutorial/)
 
-
 [embrio editor grafico](http://www.open-electronics.org/embrio-a-visual-real-time-development-tool-for-the-arduino/?utm_content=buffere63e8&utm_medium=social&utm_source=facebook.com&utm_campaign=buffer)
+
 [otro editor grafico](http://www.visuino.com/)
