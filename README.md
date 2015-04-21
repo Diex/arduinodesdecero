@@ -32,9 +32,13 @@ session #0
 
 + no hacer cosas con una computadora si no necesito una computadora para hacerlas
 
+________________________________________________________________________________________
+
 links de utilidad:
 ------------------
 [site de arduino](http://arduino.cc/en/Reference/HomePage)
+
+________________________________________________________________________________________
 
 proyectos:
 ----------
@@ -43,14 +47,17 @@ proyectos:
 [web server usando Ethernet Shield](http://www.instructables.com/id/Arduino-Ethernet-Shield-Tutorial/)
 [embrio editor grafico](http://www.open-electronics.org/embrio-a-visual-real-time-development-tool-for-the-arduino/?utm_content=buffere63e8&utm_medium=social&utm_source=facebook.com&utm_campaign=buffer)
 [otro editor grafico](http://www.visuino.com/)
+________________________________________________________________________________________
 
 dónde comprar arduino:
-______________________
+----------------------
+
 [openhacks](https://www.openhacks.com/index.php)
 [intek](http://www.intekelectronica.com.ar/index.php)
 [patagonia tech](http://compras.patagoniatecnology.com/)
 [nubbeo](http://eshops.mercadolibre.com.ar/nubbeo)
 
+________________________________________________________________________________________
 
 interfase:
 ----------
