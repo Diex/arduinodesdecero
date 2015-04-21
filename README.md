@@ -53,11 +53,8 @@ dónde comprar arduino:
 ----------------------
 
 [openhacks](https://www.openhacks.com/index.php)
-
 [intek](http://www.intekelectronica.com.ar/index.php)
-
 [patagonia tech](http://compras.patagoniatecnology.com/)
-
 [nubbeo](http://eshops.mercadolibre.com.ar/nubbeo)
 
 
