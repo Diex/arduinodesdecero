@@ -12,8 +12,8 @@ Some code and wiring inspired by http://en.wikiversity.org/wiki/User:Dstaub/robo
 
 int trigPin = 13;
 // directivas del compilador
-#define trigPin 13
-#define echoPin 12
+#define trigPin 2
+#define echoPin 3
 #define led 11
 #define led2 10
 #define velSonido 58
@@ -57,6 +57,6 @@ void loop() {
     Serial.println(" cm");
   }
     
-  delay(500);
+  delay(50);
 }
 
