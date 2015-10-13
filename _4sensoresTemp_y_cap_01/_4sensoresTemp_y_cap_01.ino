@@ -1,3 +1,5 @@
+#include <CapacitiveSensor.h>
+
  ////////////////////////////////////////////////////////
 // configuracion de los perifericos
 ////////////////////////////////////////////////////////
@@ -12,6 +14,13 @@ unsigned int led2 = 6;
 unsigned int led3 = 10;
 unsigned int led4 = 11;
 
+
+uint16_t capTrigger = 4;
+
+CapacitiveSensor   cs1 = CapacitiveSensor(capTrigger,7);        // 10M resistor between pins 4 & 2, pin 2 is sensor pin, add a wire and or foil if desired
+CapacitiveSensor   cs2 = CapacitiveSensor(capTrigger,8);        // 10M resistor between pins 4 & 2, pin 2 is sensor pin, add a wire and or foil if desired
+CapacitiveSensor   cs3 = CapacitiveSensor(capTrigger,9);        // 10M resistor between pins 4 & 2, pin 2 is sensor pin, add a wire and or foil if desired
+CapacitiveSensor   cs4 = CapacitiveSensor(capTrigger,12);        // 10M resistor between pins 4 & 2, pin 2 is sensor pin, add a wire and or foil if desired
 
 
 // los sensores son LM35 o sea que necesito una entrada analogica para cada uno
@@ -50,12 +59,15 @@ float temp2 = 0.0;
 float temp3 = 0.0;
 float temp4 = 0.0;
 
+
+
 // para que sea mas facil luego el codigo hago unas estructuras que guardan esas variables
 uint8_t sensores[] = {sensor1, sensor2, sensor3, sensor4};
 uint16_t sensores_v[] = {sensor1_v, sensor2_v, sensor3_v, sensor4_v};
 uint8_t sensores_s[] = {sensor1_s, sensor2_s, sensor3_s, sensor4_s};
 float sensores_t[] = {temp1, temp2, temp3, temp4};
 
+CapacitiveSensor caps[] = {cs1, cs2, cs3, cs3};
 uint8_t leds[] = {led1, led2, led3, led4};
 
 uint8_t qty = 4; // cantidad de estaciones
@@ -66,6 +78,11 @@ void setup() {
     pinMode(sensores[i], INPUT);   // los sensores como input (aunque no hace falta)
     pinMode(leds[i], OUTPUT);      // los leds como salida (y por default, tampoco hace falta) pero le da mejor lectura a lo que hace mi programa
   }
+  
+  for (int i = 0 ; i < qty; i++) {
+    caps[i].set_CS_AutocaL_Millis(0xFFFFFFFF);     // turn off autocalibrate on channel 1 - just as an example
+  }
+  
   Serial.begin(9600);
 //    analogReference(INTERNAL);
 }
@@ -75,10 +92,11 @@ long nextSendDelay = 50;
 long now = 0;
 
 void loop() {
-  
-  readSensors();
   checkSensorsState();
+  
+  readTemperaturSensors();
   updateTemperatures();
+  
   turnLeds();
   
   now = millis();
@@ -97,7 +115,7 @@ void turnLeds() {
 }
 
 //  ejecuta las lecturas en los 4 sensores
-void readSensors() {
+void readTemperaturSensors() {
   // tiro una lectura para estabilizar el AD (?)
   analogRead(0); delay(2);
   for (int i = 0 ; i < qty; i++) {
