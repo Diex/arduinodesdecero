@@ -67,7 +67,7 @@ uint16_t sensores_v[] = {sensor1_v, sensor2_v, sensor3_v, sensor4_v};
 uint8_t sensores_s[] = {sensor1_s, sensor2_s, sensor3_s, sensor4_s};
 float sensores_t[] = {temp1, temp2, temp3, temp4};
 
-CapacitiveSensor caps[] = {cs1, cs2, cs3, cs3};
+CapacitiveSensor caps[] = {cs1, cs2, cs3, cs4};
 uint8_t leds[] = {led1, led2, led3, led4};
 
 uint8_t qty = 4; // cantidad de estaciones
@@ -81,6 +81,7 @@ void setup() {
   
   for (int i = 0 ; i < qty; i++) {
     caps[i].set_CS_AutocaL_Millis(0xFFFFFFFF);     // turn off autocalibrate on channel 1 - just as an example
+    caps[i].set_CS_Timeout_Millis(25L);
   }
   
   Serial.begin(9600);
@@ -92,12 +93,13 @@ long nextSendDelay = 50;
 long now = 0;
 
 void loop() {
+//  
+
   checkSensorsState();
+  turnLeds();
   
   readTemperaturSensors();
   updateTemperatures();
-  
-  turnLeds();
   
   now = millis();
   if(now - lastSend > nextSendDelay){
@@ -127,19 +129,12 @@ void readTemperaturSensors() {
 }
 
 // actualiza el estado actual de referencia de cada uno (si esta prendido o apagado)
-void checkSensorsState(){
-  
+void checkSensorsState(){  
+    long total = 0;
     for (unsigned int i = 0 ; i < qty; i++) {
-    // si el sensor estaba prendido y la temperatura bajo del limite `
-    if (sensores_s[(char) i] == on && sensores_t[i] < tempInicial + tempMinVariacion) { 
-      // lo apago
-      sensores_s[i] = off;      
+      total =  caps[i].capacitiveSensor(30) ;      
+      sensores_s[i] = total > 200L ? on : off;
     }
-    // el caso opuesto y la temperatura supero el umbral
-    if (sensores_s[(char) i] == off && sensores_t[i] > tempFinal - tempMinVariacion ) { 
-      sensores_s[i] = on; // lo prendo
-    }
-  }
 }
 
 void updateTemperatures(){
