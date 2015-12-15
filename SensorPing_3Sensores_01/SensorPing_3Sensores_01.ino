@@ -11,17 +11,17 @@ HC-SR04 Ping distance sensor]
  */
 // #include <ardumidi.h>
 
-#define echo3 12
-#define trig3 4
+#define echo3 7
+#define trig3 8
 
-#define echo2 11
-#define trig2 5
+#define echo2 9
+#define trig2 10
 
-#define echo1 10
-#define trig1 6
+#define echo1 11
+#define trig1 12
 
 void setup() {
-   Serial.begin(9600);
+ Serial.begin(9600);
 
   pinMode(trig1, OUTPUT);
   pinMode(trig2, OUTPUT);
@@ -37,8 +37,12 @@ void setup() {
 
 void loop() {
   
-  Serial.print(readDistance(echo1, trig1));
-  Serial.println();
+  Serial.print(readDistance(echo1, trig1), DEC);
+  Serial.print(":");
+  Serial.print(readDistance(echo2, trig2), DEC);
+  Serial.print(":");
+  Serial.print(readDistance(echo3, trig3), DEC);
+  Serial.print('\n');
 
   // Serial.print("one   :"); Serial.println();
   // delay(10);
@@ -47,24 +51,37 @@ void loop() {
   // Serial.print("three :"); Serial.println(readDistance(echo3, trig3));
   // delay(10);
 
-  delay(100);
+  delay(50);
 
   // midi();
 }
 
 
-long readDistance(int sensor, int trigPin){
-  long duration, distance;
+unsigned long averageSensor(int sensor, int trigPin) {
+  unsigned long acumulator;
+  uint16_t i;
+  uint8_t SAMPLESIZE = 10;
+  uint8_t INITDELAYMS = 1;
   
+  for(i = 0, acumulator = 0; i < SAMPLESIZE; i++) {
+    acumulator += readDistance(sensor, trigPin);
+//    delay(INITDELAYMS);
+  }
+ 
+  // return the mean (rounded up)
+  return (unsigned long) acumulator / SAMPLESIZE; 
+}
+
+unsigned long readDistance(int sensor, int trigPin){
+  long duration, distance;    
   digitalWrite(trigPin, LOW);        // apago el pin trigger
-  delay(1);                          // just in case
+  delay(25);              // just in case  
   digitalWrite(trigPin, HIGH);       // enciendo el pin 
   delayMicroseconds(10);             // aguanta un cacho
   digitalWrite(trigPin, LOW);        // lo vuelve a apagar
 
-  duration = pulseIn(sensor, HIGH);  
-  distance = (duration / 2) * 343 / 1E4 ;
-
+  duration = pulseIn(sensor, HIGH, 52E3L);  // timeout en us
+  distance = duration / 2L * 343L / 1E3; // mm
 
   return distance;
 }
